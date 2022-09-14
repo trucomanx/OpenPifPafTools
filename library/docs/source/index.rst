@@ -10,7 +10,18 @@ Welcome to OpenpifpafTools's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+Módulo OpenpifpafAnnotations
+====================
 
+.. automodule:: OpenpifpafAnnotations
+    :members:
+    
+Módulo OpenpifpafGetData
+========================
+Este módulo contiene funciones para obtener información calculado de las anotaciones.
+
+.. automodule:: OpenpifpafGetData
+    :members:
 
 Indices and tables
 ==================
