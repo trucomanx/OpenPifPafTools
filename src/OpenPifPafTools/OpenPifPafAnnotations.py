@@ -4,7 +4,7 @@
 import openpifpaf
 import PIL
 import numpy as np
-import torch
+#import torch
 import cv2
 
 

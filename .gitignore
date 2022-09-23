@@ -1,4 +1,5 @@
-/.ipynb_checkpoints/test-checkpoint.ipynb
-/library/__pycache__/openpifpaflib.cpython-38.pyc
-/output_file.png
-/output_file_body0.png
+/.ipynb_checkpoints
+/library/__pycache__
+/src/OpenPifPafTools/__pycache__
+/tests/output
+/tests/.ipynb_checkpoints
