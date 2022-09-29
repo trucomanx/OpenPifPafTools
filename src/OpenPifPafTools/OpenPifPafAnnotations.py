@@ -6,18 +6,18 @@ import PIL
 import numpy as np
 #import torch
 import cv2
+import OpenPifPafTools as oppt
+from PIL import Image
 
-
-def get_openpifpaf_annotation_from_imgpath(filepath):
+def get_openpifpaf_annotation_from_imgpil(pil_im):
     '''
-    Lee un archivo de imagen `filepath` y retorna las anotaciones y la imagen leida.
+    Lee una imagen `pil_im` y retorna las anotaciones y la imagen leida.
     
-    :param filepath: Archivo de imagen a analizar.
-    :type filepath: str
+    :param pil_im: Imagen a analizar.
+    :type pil_im: PIL
     :return: Retorna anotaciones y la imagen leida.
     :rtype: list[openpifpaf.annotation.Annotation], PIL.Image.Image
     '''
-    pil_im = PIL.Image.open(filepath).convert('RGB')
     
     '''
     im = np.asarray(pil_im)
@@ -39,7 +39,20 @@ def get_openpifpaf_annotation_from_imgpath(filepath):
     '''
     #print(gt_anns) # []
     #print(image_meta) # {'dataset_index': 0, 'offset': array([ 0., -2.]), 'scale': array([1., 1.]), 'rotation': {'angle': 0.0, 'width': None, 'height': None}, 'valid_area': array([  0.,   2., 799., 668.]), 'hflip': False, 'width_height': array([800, 669])}
-    return annots, pil_im
+    return annots
+    
+def get_openpifpaf_annotation_from_imgpath(filepath):
+    '''
+    Lee un archivo de imagen `filepath` y retorna las anotaciones y la imagen leida.
+    
+    :param filepath: Archivo de imagen a analizar.
+    :type filepath: str
+    :return: Retorna anotaciones y la imagen leida.
+    :rtype: list[openpifpaf.annotation.Annotation], PIL.Image.Image
+    '''
+    pil_im = PIL.Image.open(filepath).convert('RGB')
+    
+    return get_openpifpaf_annotation_from_imgpil(pil_im),pil_im
 
 def resize_openpifpaf_annotation_and_pil_img(annotation,pil_img, width=None):
     '''
@@ -70,6 +83,43 @@ def resize_openpifpaf_annotation_and_pil_img(annotation,pil_img, width=None):
     
     return annotation,pil_img
 
+def write_openpifpaf_annotation_in_pil_img( pil_im,
+                                            predictions,
+                                            method='temporal_file',
+                                            tmp_file='tmp_file.png'
+                                            ):
+    '''
+    Escribe en una `pil_im` anotaciones en `predictions` usando el método `method`.
+    
+    :param pil_im: Imagen a ser escrita.
+    :type pil_im: PIL.Image.Image
+    :param predictions: Anotaciones
+    :type predictions: list[openpifpaf.annotation.Annotation]
+    :param method: El metodo de escribir, pude ser: 'temporal_file', 'matplotlib'.
+    :type method: string
+    :param tmp_file: Si el método usa un archivo temporal usa este nombre.
+    :type tmp_file: string
+    :return: Retorna una imagem pil anotada.
+    :rtype: PIL.Image.Image
+    '''
+    np_im=np.asarray(pil_im);
+    width, height = pil_im.size
+    annotation_painter = openpifpaf.show.AnnotationPainter();
+    
+    if method=='matplotlib':
+        with openpifpaf.show.image_canvas(np_im) as ax: # ax:matplotlib.axes._axes.Axes
+            annotation_painter.annotations(ax, predictions,subtexts=None)
+            
+            img_pil_tmp =oppt.fig_to_3ch_pil(ax.get_figure())
+    else:
+        with openpifpaf.show.image_canvas(np_im, tmp_file) as ax: 
+            annotation_painter.annotations(ax, predictions,subtexts=None)
+        img_pil_tmp=Image.open(tmp_file);
+    
+    img_pil_tmp= img_pil_tmp.resize((width, height))
+    
+    return img_pil_tmp;
+    
 def save_openpifpaf_annotation_in_img(pil_im,annotation,output_file,width=None):
     '''
     A partir de una lista de anotaciones y una imagen 
