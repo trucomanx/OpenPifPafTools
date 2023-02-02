@@ -184,44 +184,52 @@ def get_face_bounding_rectangle(annotation_data):
     shoulderl=np.array([annotation_data[5,0], annotation_data[5,1]]);
     shoulderr=np.array([annotation_data[6,0], annotation_data[6,1]]);
     
+    #print('nose',nose)
+    #print('eyel',eyel)
+    #print('eyer',eyer)
+    #print('earl',earl)
+    #print('earr',earr)
+    #print('shoulderl',shoulderl)
+    #print('shoulderr',shoulderr)
     # c0 es el centro de la cara
     c0=np.array([0,0]);
     n=0;
-    if ((nose[0]!=0) and (nose[1]!=0)):
+    if ((nose[0]>0) and (nose[1]>0)):
         c0=c0+nose;
         n=n+1;
-    if ((eyel[0]!=0) and (eyel[1]!=0)):
+    if ((eyel[0]>0) and (eyel[1]>0)):
         c0=c0+eyel;
         n=n+1;
-    if ((eyer[0]!=0) and (eyer[1]!=0)):
+    if ((eyer[0]>0) and (eyer[1]>0)):
         c0=c0+eyer;
         n=n+1;
-    if ((earl[0]!=0) and (earl[1]!=0)):
+    if ((earl[0]>0) and (earl[1]>0)):
         c0=c0+earl;
         n=n+1;
-    if ((earr[0]!=0) and (earr[1]!=0)):
+    if ((earr[0]>0) and (earr[1]>0)):
         c0=c0+earr;
         n=n+1;
     if(n==0):
         return (0,0,0,0);
     c0=c0/n;
+    #print('c0',c0)
     
     #direccion izquierda - derecha
     v=np.array([0,0]);
     n=0;
-    if (((shoulderl[0]!=0) and (shoulderl[1]!=0)) and ((shoulderr[0]!=0) and (shoulderr[1]!=0))):
+    if (((shoulderl[0]>0) and (shoulderl[1]>0)) and ((shoulderr[0]>0) and (shoulderr[1]>0))):
         v=v+0.5*(shoulderl-shoulderr);
         n=n+1;
-    if (((eyel[0]!=0) and (eyel[1]!=0)) and ((eyer[0]!=0) and (eyer[1]!=0))):
+    if (((eyel[0]>0) and (eyel[1]>0)) and ((eyer[0]>0) and (eyer[1]>0))):
         v=v+eyel-eyer;
         n=n+1;
-    if (((earl[0]!=0) and (earl[1]!=0)) and ((earr[0]!=0) and (earr[1]!=0))):
+    if (((earl[0]>0) and (earl[1]>0)) and ((earr[0]>0) and (earr[1]>0))):
         v=v+earl-earr;
         n=n+1;
-    if (((earl[0]!=0) and (earl[1]!=0)) and ((eyel[0]!=0) and (eyel[1]!=0))):
+    if (((earl[0]>0) and (earl[1]>0)) and ((eyel[0]>0) and (eyel[1]>0))):
         v=v+earl-eyel;
         n=n+1;
-    if (((earr[0]!=0) and (earr[1]!=0)) and ((eyer[0]!=0) and (eyer[1]!=0))):
+    if (((earr[0]>0) and (earr[1]>0)) and ((eyer[0]>0) and (eyer[1]>0))):
         v=v+eyer-earr;
         n=n+1;
     if(n==0):
@@ -298,7 +306,7 @@ def get_body_bounding_rectangle(annotation_data, factor=1.2):
     b=annotation_data[:,0:2];
     N=b.shape[0];
     for n in range(N):
-        if ((b[n,0]!=0)and(b[n,1]!=0)):
+        if ((b[n,0]>0)and(b[n,1]>0)):
             pm=np.concatenate((pm,[b[n,:]]), axis=0);
     
     N=pm.shape[0];
