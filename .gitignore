@@ -3,3 +3,5 @@
 /src/OpenPifPafTools/__pycache__
 /tests/output
 /tests/.ipynb_checkpoints
+src/dist
+src/OpenPifPafTools.egg-info
