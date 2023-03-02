@@ -18,7 +18,7 @@ For more informations use `python setup.py --help-commands`
 
 Install the packaged library
 
-    pip3 install dist/OpenPifPafTools-VERSION.tar.gz
+    pip install dist/OpenPifPafTools-VERSION.tar.gz
 
 
 
