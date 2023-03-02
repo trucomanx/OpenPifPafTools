@@ -1,18 +1,27 @@
 # OpenPifPafTools
 OpenPifPafTools
 
-# Install 
-
-    pip3 install OpenPifPafTools-VERSION.tar.gz
-
 # Packaging
+
+Download the source code
+
+    git clone https://github.com/trucomanx/OpenPifPafTools.git
 
 The next command generates the `dist/OpenPifPafTools-VERSION.tar.gz` file.
 
-    cd src
+    cd OpenPifPafTools/src
     python setup.py sdist
 
 For more informations use `python setup.py --help-commands`
+
+# Install 
+
+Install the packaged library
+
+    pip3 install dist/OpenPifPafTools-VERSION.tar.gz
+
+
+
 
 
 
