@@ -161,7 +161,7 @@ def get_between_shoulders_distance(annotation_data):
     
 ################################################################################
 
-def get_face_bounding_rectangle(annotation_data, factor=1.2):
+def get_face_bounding_rectangle(annotation_data, factor=1.0):
     '''
     Retorna un bounding box de la cara.
     En caso de error retorna una tupla (0,0,0,0).
