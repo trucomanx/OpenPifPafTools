@@ -2,8 +2,8 @@
 
 
 #import openpifpaf
-import OpenPifPafAnnotations as oppa
-import OpenPifPafGetData as oppd
+import OpenPifPafTools.OpenPifPafAnnotations as oppa
+import OpenPifPafTools.OpenPifPafGetData as oppd
 
 
 def get_pil_images_with_people(filepath):
