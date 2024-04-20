@@ -10,7 +10,7 @@ Download the source code
 The next command generates the `dist/OpenPifPafTools-VERSION.tar.gz` file.
 
     cd OpenPifPafTools/src
-    python setup.py sdist
+    python3 setup.py sdist
 
 For more informations use `python setup.py --help-commands`
 
@@ -18,7 +18,7 @@ For more informations use `python setup.py --help-commands`
 
 Install the packaged library
 
-    pip install dist/OpenPifPafTools-VERSION.tar.gz
+    pip3 install dist/OpenPifPafTools-*.tar.gz
 
 
 
