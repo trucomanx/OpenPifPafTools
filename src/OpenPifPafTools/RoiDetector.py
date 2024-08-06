@@ -6,7 +6,7 @@ import numpy as np
 import OpenPifPafTools.OpenPifPafGetData as oppgd
 
 
-class OpenPifPafProcessor:
+class Detector:
     def __init__(self, checkpoint='shufflenetv2k16'):
 
         self.predictor = openpifpaf.Predictor(checkpoint=checkpoint);
