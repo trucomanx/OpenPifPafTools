@@ -40,13 +40,15 @@ class Detector:
             else:
                 body_roi=pil_image.crop((xi,yi,xo,yo));
             
+            mat=self.zero_out_rows(annot.data);
+            
             # skel
-            skel_vec=self.zero_out_rows(annot.data).reshape((-1,));
+            skel_vec=mat.reshape((-1,));
             
             
         return skel_vec, body_roi, face_roi;
     
-    def zero_out_rows(matrix):
+    def zero_out_rows(self,matrix):
         """
         Zeros out rows in the matrix if any element in the row is less than 0.
         
@@ -65,6 +67,7 @@ class Detector:
         
         # Find rows where any element is less than or equal to z
         rows_to_zero = np.any(matrix < 0.0, axis=1)
+        
         
         # Set those rows to zero
         matrix[rows_to_zero] = 0.0;
