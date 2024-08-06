@@ -5,3 +5,4 @@
 /tests/.ipynb_checkpoints
 src/dist
 src/OpenPifPafTools.egg-info
+/tests/example.jpg
