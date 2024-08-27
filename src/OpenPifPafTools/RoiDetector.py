@@ -50,6 +50,18 @@ class Detector:
             
         return skel_vec, body_roi, face_roi;
     
+    def process_image_list(self,pil_image_list):
+        skel_vec_list=[];
+        body_roi_list=[];
+        face_roi_list=[];
+        
+        for pil_image in pil_image_list:
+            skel_vec, body_roi, face_roi = self.process_image(pil_image);
+            skel_vec_list.append(skel_vec);
+            body_roi_list.append(body_roi);
+            face_roi_list.append(face_roi);
+        return skel_vec_list, body_roi_list, face_roi_list
+    
     def zero_out_rows(self,matrix):
         """
         Zeros out rows in the matrix if any element in the row is less than 0.
