@@ -7,9 +7,11 @@ import OpenPifPafTools.OpenPifPafGetData as oppgd
 
 
 class Detector:
-    def __init__(self, checkpoint='shufflenetv2k16'):
+    def __init__(self, checkpoint='shufflenetv2k16', body_factor=1.0, face_factor=1.0):
 
         self.predictor = openpifpaf.Predictor(checkpoint=checkpoint);
+        self.body_factor = body_factor;
+        self.face_factor = face_factor;
 
     def process_image(self,pil_image):
         
@@ -21,7 +23,7 @@ class Detector:
         # Extract keypoints
         for annot in annotation1: 
             # body
-            (xi,yi,xo,yo)=oppgd.get_face_bounding_rectangle(annot.data,factor=1.0);
+            (xi,yi,xo,yo)=oppgd.get_face_bounding_rectangle(annot.data,factor=self.face_factor);
             xi=int(xi);        yi=int(yi);
             xo=int(xo);        yo=int(yo);
             
@@ -31,7 +33,7 @@ class Detector:
                 face_roi=pil_image.crop((xi,yi,xo,yo));
             
             # face
-            (xi,yi,xo,yo)=oppgd.get_body_bounding_rectangle(annot.data,factor=1.0);
+            (xi,yi,xo,yo)=oppgd.get_body_bounding_rectangle(annot.data,factor=self.body_factor);
             xi=int(xi);        yi=int(yi);
             xo=int(xo);        yo=int(yo);
             
