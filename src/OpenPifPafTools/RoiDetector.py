@@ -14,6 +14,10 @@ class Detector:
         self.face_factor = face_factor;
 
     def process_image(self,pil_image):
+        skel_vec, body_roi, face_roi, body_bbox, face_bbox =self.process_image_full(pil_image);
+        return skel_vec, body_roi, face_roi;
+        
+    def process_image_full(self,pil_image):
         
         annotation1, _, _ = self.predictor.pil_image(pil_image);
         
@@ -22,25 +26,29 @@ class Detector:
 
         # Extract keypoints
         for annot in annotation1: 
-            # body
+            # face
             (xi,yi,xo,yo)=oppgd.get_face_bounding_rectangle(annot.data,factor=self.face_factor);
             xi=int(xi);        yi=int(yi);
             xo=int(xo);        yo=int(yo);
             
             if (xi,yi,xo,yo)==(0,0,0,0):
+                face_bbox=None;
                 face_roi=None;
             else:
-                face_roi=pil_image.crop((xi,yi,xo,yo));
+                face_bbox=(xi,yi,xo,yo);
+                face_roi=pil_image.crop(face_bbox);
             
-            # face
+            # body
             (xi,yi,xo,yo)=oppgd.get_body_bounding_rectangle(annot.data,factor=self.body_factor);
             xi=int(xi);        yi=int(yi);
             xo=int(xo);        yo=int(yo);
             
             if (xi,yi,xo,yo)==(0,0,0,0):
+                body_bbox=None;
                 body_roi=None;
             else:
-                body_roi=pil_image.crop((xi,yi,xo,yo));
+                body_bbox=(xi,yi,xo,yo);
+                body_roi=pil_image.crop(body_bbox);
             
             mat=self.zero_out_rows(annot.data);
             
@@ -48,7 +56,7 @@ class Detector:
             skel_vec=mat.reshape((-1,));
             
             
-        return skel_vec, body_roi, face_roi;
+        return skel_vec, body_roi, face_roi, body_bbox, face_bbox;
     
     def process_image_list(self,pil_image_list):
         skel_vec_list=[];
