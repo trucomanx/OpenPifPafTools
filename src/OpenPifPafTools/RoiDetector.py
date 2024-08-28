@@ -22,7 +22,7 @@ class Detector:
         annotation1, _, _ = self.predictor.pil_image(pil_image);
         
         if not annotation1:
-            return None, None, None
+            return None, None, None, None, None;
 
         # Extract keypoints
         for annot in annotation1: 
