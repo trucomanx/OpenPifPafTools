@@ -59,16 +59,27 @@ class Detector:
         return skel_vec, body_roi, face_roi, body_bbox, face_bbox;
     
     def process_image_list(self,pil_image_list):
+        skel_vec_list, body_roi_list, face_roi_list, body_bbox_list, face_bbox_list = self.process_image_full_list(pil_image_list);
+        
+        return skel_vec_list, body_roi_list, face_roi_list;
+        
+    def process_image_full_list(self,pil_image_list):
         skel_vec_list=[];
         body_roi_list=[];
         face_roi_list=[];
+        body_bbox_list=[];
+        face_bbox_list=[];
         
         for pil_image in pil_image_list:
-            skel_vec, body_roi, face_roi = self.process_image(pil_image);
+            skel_vec, body_roi, face_roi, body_bbox, face_bbox = self.process_image_full(pil_image);
+            
             skel_vec_list.append(skel_vec);
             body_roi_list.append(body_roi);
             face_roi_list.append(face_roi);
-        return skel_vec_list, body_roi_list, face_roi_list
+            body_bbox_list.append(body_bbox);
+            face_bbox_list.append(face_bbox);
+            
+        return skel_vec_list, body_roi_list, face_roi_list, body_bbox_list, face_bbox_list;
     
     def zero_out_rows(self,matrix):
         """
