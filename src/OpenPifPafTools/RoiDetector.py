@@ -18,6 +18,12 @@ class Detector:
         return skel_vec, body_roi, face_roi;
         
     def process_image_full(self,pil_image):
+        """
+        Se nao se achou pessoas entao todos seus elementos sao None.
+        Se se achou uma pessoa, entao a  saida  e' trabalhavel.
+        Se face nao e' achado se retorna None para face e bouding box.
+        Se body nao e' achado se retorna None para body e bouding box.
+        """
         
         annotation1, _, _ = self.predictor.pil_image(pil_image);
         
