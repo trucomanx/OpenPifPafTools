@@ -181,6 +181,84 @@ def get_between_shoulders_distance(annotation_data):
     
 ################################################################################
 
+def get_face_bounding_rectangle_new1(annotation_data, factor=1.0):
+    # Extrair os pontos
+    nose = np.array([annotation_data[0, 0], annotation_data[0, 1]])
+    
+    eyel = np.array([annotation_data[1, 0], annotation_data[1, 1]])
+    eyer = np.array([annotation_data[2, 0], annotation_data[2, 1]])
+    
+    earl = np.array([annotation_data[3, 0], annotation_data[3, 1]])
+    earr = np.array([annotation_data[4, 0], annotation_data[4, 1]])
+    
+    shoulderl = np.array([annotation_data[5, 0], annotation_data[5, 1]])
+    shoulderr = np.array([annotation_data[6, 0], annotation_data[6, 1]])
+
+    # Filtrar os pontos válidos
+    pontos = [nose, eyel, eyer, earl, earr];
+    pontos_validos = np.array([p for p in pontos if valid_cord(p)]);
+    
+    if pontos_validos.size == 0:
+        return (0,0,0,0);  # Nenhum ponto válido
+    
+    # Calcular o ângulo de inclinação usando os olhos
+    delta=np.array([0.0,0.0]);
+    n=0;
+    if valid_cord(shoulderl) and valid_cord(shoulderr):
+        delta += 0.33*(shoulderl - shoulderr);
+        n +=1;
+    if valid_cord(eyel) and valid_cord(eyer):
+        delta += 2.0*(eyel - eyer);
+        n +=1;
+    if valid_cord(earl) and valid_cord(earr):
+        delta += (earl - earr);
+        n +=1;
+    if valid_cord(earl) and valid_cord(eyel):
+        delta += 3.0*(earl-eyel);
+        n +=1;
+    if valid_cord(eyer) and valid_cord(earr):
+        delta += 3.0*(eyer-earr);
+        n +=1;
+    
+    if n>0:
+        delta=delta/n;
+        angulo = np.arctan2(delta[1], delta[0]);
+    else:
+        return (0,0,0,0);
+    
+    
+    # Width da face
+    width=np.linalg.norm(delta)*factor;
+    height=width*1.5*factor;
+
+    # centro
+    centro = np.mean(pontos_validos, axis=0);
+    print('centro',centro,width,height)
+    
+    Pbl=np.array([-0.5*width,-0.5*height]);
+    Pbr=np.array([+0.5*width,-0.5*height]);
+    Ptl=np.array([-0.5*width,+0.5*height]);
+    Ptr=np.array([+0.5*width,+0.5*height]);
+    
+    # 
+    rotacionados = []
+    for p in [Pbl, Pbr, Ptl, Ptr]:
+        x, y = p
+        x_rot = x * np.cos(-angulo) - y * np.sin(-angulo)
+        y_rot = x * np.sin(-angulo) + y * np.cos(-angulo)
+        rotacionados.append([x_rot, y_rot]+centro)
+
+    # Calcular o bounding box com os pontos rotacionados
+    rotacionados = np.array(rotacionados)
+    x_min, y_min = np.min(rotacionados, axis=0)
+    x_max, y_max = np.max(rotacionados, axis=0)
+        
+    res=(x_min, y_min, x_max, y_max);
+
+    # Retornar a tupla no formato (xi, yi, xo, yo)
+    return res
+    
+
 def get_face_bounding_rectangle(annotation_data, factor=1.0):
     '''
     Retorna un bounding box de la cara.

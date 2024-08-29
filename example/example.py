@@ -11,9 +11,9 @@ import PIL
 import OpenPifPafTools.RoiDetector    as opp
 
 
-det=opp.Detector(checkpoint='shufflenetv2k16',body_factor=1.0,face_factor=0.85);
+det=opp.Detector(checkpoint='shufflenetv2k16',body_factor=1.0,face_factor=0.9,face_method=1);
 
-pil_img=PIL.Image.open('../dataset/filename463.jpg');
+pil_img=PIL.Image.open('../dataset/filename463-rot2.jpg');
 
 skel_vec, body_roi, face_roi=det.process_image(pil_img);
 

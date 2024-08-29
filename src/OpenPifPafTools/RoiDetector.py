@@ -25,11 +25,12 @@ def standardize_matrix(matrix):
     return matrix
     
 class Detector:
-    def __init__(self, checkpoint='shufflenetv2k16', body_factor=1.0, face_factor=1.0):
+    def __init__(self, checkpoint='shufflenetv2k16', body_factor=1.0, face_factor=1.0,face_method=0):
 
         self.predictor = openpifpaf.Predictor(checkpoint=checkpoint);
         self.body_factor = body_factor;
         self.face_factor = face_factor;
+        self.face_method = face_method;
 
     def process_image(self,pil_image):
         skel_vec, body_roi, face_roi, body_bbox, face_bbox =self.process_image_full(pil_image);
@@ -53,7 +54,10 @@ class Detector:
             annot_data=standardize_matrix(annot.data);
             
             # face
-            (xi,yi,xo,yo)=oppgd.get_face_bounding_rectangle(annot_data,factor=self.face_factor);
+            if self.face_method==0:
+                (xi,yi,xo,yo)=oppgd.get_face_bounding_rectangle(annot_data,factor=self.face_factor);
+            else:
+                (xi,yi,xo,yo)=oppgd.get_face_bounding_rectangle_new1(annot_data,factor=self.face_factor);
             xi=int(xi);        yi=int(yi);
             xo=int(xo);        yo=int(yo);
             
