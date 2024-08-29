@@ -11,7 +11,7 @@ def valid_cord(v, p=1.0):
     return valid_cordxy(v[0],v[1], p=p);
 
 def valid_cordxy(a, b, p=1.0):
-    if p<=0;
+    if p<=0:
         return False;
     
     # Verifica se ambas as variáveis são não negativas
