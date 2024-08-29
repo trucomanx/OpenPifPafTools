@@ -7,6 +7,26 @@ from numpy import linalg as LA
 
 ################################################################################
 
+def valid_cord(v, p=1.0):
+    return valid_cordxy(v[0],v[1], p=p);
+
+def valid_cordxy(a, b, p=1.0):
+    if p<=0;
+        return False;
+    
+    # Verifica se ambas as variáveis são não negativas
+    if a < 0 or b < 0:
+        return False;
+    
+    # Verifica se ambas as variáveis não são iguais a zero
+    if a == 0 and b == 0:
+        return False;
+    
+    # Caso as condições anteriores sejam atendidas, a validação é bem-sucedida
+    return True;
+
+################################################################################
+
 def get_between_eyes_distance(annotation_data):
     '''
     Retorna la distancia entre los ojos (pixels).
@@ -194,19 +214,19 @@ def get_face_bounding_rectangle(annotation_data, factor=1.0):
     # c0 es el centro de la cara
     c0=np.array([0,0]);
     n=0;
-    if ((nose[0]>0) and (nose[1]>0)):
+    if valid_cord(nose):
         c0=c0+nose;
         n=n+1;
-    if ((eyel[0]>0) and (eyel[1]>0)):
+    if valid_cord(eyel):
         c0=c0+eyel;
         n=n+1;
-    if ((eyer[0]>0) and (eyer[1]>0)):
+    if valid_cord(eyer):
         c0=c0+eyer;
         n=n+1;
-    if ((earl[0]>0) and (earl[1]>0)):
+    if valid_cord(earl):
         c0=c0+earl;
         n=n+1;
-    if ((earr[0]>0) and (earr[1]>0)):
+    if valid_cord(earr):
         c0=c0+earr;
         n=n+1;
     if(n==0):
@@ -217,19 +237,19 @@ def get_face_bounding_rectangle(annotation_data, factor=1.0):
     #direccion izquierda - derecha
     v=np.array([0,0]);
     n=0;
-    if (((shoulderl[0]>0) and (shoulderl[1]>0)) and ((shoulderr[0]>0) and (shoulderr[1]>0))):
+    if valid_cord(shoulderl) and  valid_cord(shoulderr):
         v=v+0.5*(shoulderl-shoulderr);
         n=n+1;
-    if (((eyel[0]>0) and (eyel[1]>0)) and ((eyer[0]>0) and (eyer[1]>0))):
+    if valid_cord(eyel) and valid_cord(eyer):
         v=v+eyel-eyer;
         n=n+1;
-    if (((earl[0]>0) and (earl[1]>0)) and ((earr[0]>0) and (earr[1]>0))):
+    if valid_cord(earl) and valid_cord(earr):
         v=v+earl-earr;
         n=n+1;
-    if (((earl[0]>0) and (earl[1]>0)) and ((eyel[0]>0) and (eyel[1]>0))):
+    if valid_cord(earl) and valid_cord(eyel):
         v=v+earl-eyel;
         n=n+1;
-    if (((earr[0]>0) and (earr[1]>0)) and ((eyer[0]>0) and (eyer[1]>0))):
+    if valid_cord(eyer) and valid_cord(earr):
         v=v+eyer-earr;
         n=n+1;
     if(n==0):

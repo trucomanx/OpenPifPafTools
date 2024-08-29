@@ -5,7 +5,25 @@ import numpy as np
 
 import OpenPifPafTools.OpenPifPafGetData as oppgd
 
-
+def standardize_matrix(matrix):
+    '''
+    Se existe uma linha negativa entao todo a linha e' zero
+    Se a probabilidade e' menor igual a cero a linha e' zero
+    '''
+    # Cria uma máscara booleana para as linhas onde algum elemento é negativo
+    mask_negative = (matrix < 0).any(axis=1)
+    
+    # Cria uma máscara booleana para as linhas onde o elemento da terceira coluna é menor ou igual a zero
+    mask_third_column = matrix[:, 2] <= 0
+    
+    # Combina as duas máscaras usando a operação lógica OR
+    mask = mask_negative | mask_third_column
+    
+    # Atribui zero a todas as linhas que atendem à condição
+    matrix[mask] = 0
+    
+    return matrix
+    
 class Detector:
     def __init__(self, checkpoint='shufflenetv2k16', body_factor=1.0, face_factor=1.0):
 
@@ -32,6 +50,8 @@ class Detector:
 
         # Extract keypoints
         for annot in annotation1: 
+            annot=standardize_matrix(annot);
+            
             # face
             (xi,yi,xo,yo)=oppgd.get_face_bounding_rectangle(annot.data,factor=self.face_factor);
             xi=int(xi);        yi=int(yi);
