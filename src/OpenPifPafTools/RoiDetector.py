@@ -50,10 +50,10 @@ class Detector:
 
         # Extract keypoints
         for annot in annotation1: 
-            annot=standardize_matrix(annot);
+            annot_data=standardize_matrix(annot.data);
             
             # face
-            (xi,yi,xo,yo)=oppgd.get_face_bounding_rectangle(annot.data,factor=self.face_factor);
+            (xi,yi,xo,yo)=oppgd.get_face_bounding_rectangle(annot_data,factor=self.face_factor);
             xi=int(xi);        yi=int(yi);
             xo=int(xo);        yo=int(yo);
             
@@ -65,7 +65,7 @@ class Detector:
                 face_roi=pil_image.crop(face_bbox);
             
             # body
-            (xi,yi,xo,yo)=oppgd.get_body_bounding_rectangle(annot.data,factor=self.body_factor);
+            (xi,yi,xo,yo)=oppgd.get_body_bounding_rectangle(annot_data,factor=self.body_factor);
             xi=int(xi);        yi=int(yi);
             xo=int(xo);        yo=int(yo);
             
@@ -76,7 +76,7 @@ class Detector:
                 body_bbox=(xi,yi,xo,yo);
                 body_roi=pil_image.crop(body_bbox);
             
-            mat=self.zero_out_rows(annot.data);
+            mat=self.zero_out_rows(annot_data);
             
             # skel
             skel_vec=mat.reshape((-1,));
