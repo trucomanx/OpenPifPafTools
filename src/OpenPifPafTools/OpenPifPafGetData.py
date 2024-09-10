@@ -233,7 +233,7 @@ def get_face_bounding_rectangle_new1(annotation_data, factor=1.0):
 
     # centro
     centro = np.mean(pontos_validos, axis=0);
-    print('centro',centro,width,height)
+    #print('centro',centro,width,height)
     
     Pbl=np.array([-0.5*width,-0.5*height]);
     Pbr=np.array([+0.5*width,-0.5*height]);
