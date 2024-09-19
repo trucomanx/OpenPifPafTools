@@ -94,6 +94,9 @@ class Detector:
         return skel_vec_list, body_roi_list, face_roi_list;
         
     def process_image_full_list(self,pil_image_list):
+        '''
+        A saida pode ser uma lista None se nao tem pessoas
+        '''
         skel_vec_list=[];
         body_roi_list=[];
         face_roi_list=[];
